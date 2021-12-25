@@ -5,9 +5,15 @@ class BooksController < ApplicationController
   end
 
   def create
-    book = Book.new(book_params)
-    book.save
-    redirect_to books_path
+    @book = Book.new(book_params)
+    @books = Book.all
+
+    if @book.save
+      flash[:success] = 'bookの登録が完了しました'
+      redirect_to books_path
+    else
+      render :index
+    end
   end
 
   def show
@@ -19,9 +25,15 @@ class BooksController < ApplicationController
   end
 
   def update
-    book = Book.find(params[:id])
-    book.update(book_params)
-    redirect_to books_path
+    @book = Book.find(params[:id])
+    @books = Book.all
+    
+    if @book.update(book_params)
+      flash[:success] = 'bookの更新が完了しました'
+     redirect_to books_path
+    else
+      render :edit
+    end
   end
 
   def destroy
